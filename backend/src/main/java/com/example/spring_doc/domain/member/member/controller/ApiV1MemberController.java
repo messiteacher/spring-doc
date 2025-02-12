@@ -3,6 +3,7 @@ package com.example.spring_doc.domain.member.member.controller;
 import com.example.spring_doc.domain.member.member.dto.MemberDto;
 import com.example.spring_doc.domain.member.member.entity.Member;
 import com.example.spring_doc.domain.member.member.service.MemberService;
+import com.example.spring_doc.domain.post.post.service.PostService;
 import com.example.spring_doc.global.Rq;
 import com.example.spring_doc.global.dto.RsData;
 import com.example.spring_doc.global.exception.ServiceException;
@@ -24,11 +25,12 @@ public class ApiV1MemberController {
 
     private final MemberService memberService;
     private final Rq rq;
+    private final PostService postService;
 
     record JoinReqBody(@NotBlank String username, @NotBlank String password, @NotBlank String nickname) {}
 
     @Operation(summary = "회원 가입")
-    @PostMapping(value = "/join", produces = "application/json; charset=UTF-8")
+    @PostMapping(value = "/join", produces = "application/json;charset=UTF-8")
     public RsData<MemberDto> join(@RequestBody @Valid JoinReqBody reqBody) {
 
         memberService.findByUsername(reqBody.username())
@@ -36,14 +38,14 @@ public class ApiV1MemberController {
                     throw new ServiceException("409-1", "이미 사용중인 아이디입니다.");
                 });
 
-        Member member = memberService.join(reqBody.username, reqBody.password, reqBody.nickname);
-
+        Member member = memberService.join(reqBody.username(), reqBody.password(), reqBody.nickname());
         return new RsData<>(
                 "201-1",
                 "회원 가입이 완료되었습니다.",
                 new MemberDto(member)
         );
     }
+
 
     record LoginReqBody(@NotBlank String username, @NotBlank String password) {}
 
@@ -73,7 +75,8 @@ public class ApiV1MemberController {
                         new MemberDto(member),
                         member.getApiKey(),
                         accessToken
-                ));
+                )
+        );
     }
 
     @Operation(summary = "로그아웃", description = "로그아웃 시 쿠키 삭제")

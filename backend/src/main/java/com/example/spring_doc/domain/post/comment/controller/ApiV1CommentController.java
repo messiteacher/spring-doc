@@ -43,7 +43,7 @@ public class ApiV1CommentController {
     }
 
     @Operation(summary = "댓글 상세", description = "게시글의 댓글 상세 정보를 가져옵니다.")
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     @Transactional(readOnly = true)
     public CommentDto getItem(@PathVariable long postId, @PathVariable long id) {
 
@@ -56,7 +56,7 @@ public class ApiV1CommentController {
         return new CommentDto(comment);
     }
 
-    record WriteReqBody(String content) { }
+    record WriteReqBody(String content) {}
 
     @Operation(summary = "댓글 작성", description = "게시글에 댓글을 작성합니다.")
     @PostMapping
@@ -74,14 +74,15 @@ public class ApiV1CommentController {
         );
     }
 
-    record ModifyReqBody(String content) { }
+    record ModifyReqBody(String content) {}
 
-    @Operation(summary = "댓글 수정", description = "게시글의 댓글을 수정합니다.")
-    @PutMapping("/{id}")
+    @Operation(summary = "댓글 수정", description = "게시글의 댓글을 수정합니다.12")
+    @PutMapping("{id}")
     @Transactional
     public RsData<Void> modify(@PathVariable long postId, @PathVariable long id, @RequestBody ModifyReqBody reqBody) {
 
         Member actor = rq.getActor();
+
         Post post = postService.getItem(postId).orElseThrow(
                 () -> new ServiceException("404-1", "존재하지 않는 게시글입니다.")
         );
@@ -93,11 +94,11 @@ public class ApiV1CommentController {
 
         return new RsData<>(
                 "200-1",
-                "%d번 댓글 수정이 완료되었습니다.".formatted(comment.getId())
+                "%d번 댓글 수정이 완료되었습니다.".formatted(id)
         );
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @Transactional
     public RsData<Void> delete(@PathVariable long postId, @PathVariable long id) {
 
@@ -113,7 +114,7 @@ public class ApiV1CommentController {
 
         return new RsData<>(
                 "200-1",
-                "%d번 댓글 삭제가 완료되었습니다.".formatted(comment.getId())
+                "%d번 댓글 삭제가 완료되었습니다.".formatted(id)
         );
     }
 

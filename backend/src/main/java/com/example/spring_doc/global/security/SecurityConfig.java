@@ -32,7 +32,7 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/v1/posts/statistics")
                                 .hasRole("ADMIN")
-                                .requestMatchers("/api/v1/**")
+                                .requestMatchers("/api/*/**")
                                 .authenticated()
                                 .anyRequest()
                                 .permitAll())
