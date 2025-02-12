@@ -32,10 +32,10 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/v1/posts/statistics")
                                 .hasRole("ADMIN")
-                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/")
-                                .permitAll()
+                                .requestMatchers("/api/v1/**")
+                                .authenticated()
                                 .anyRequest()
-                                .authenticated())
+                                .permitAll())
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
