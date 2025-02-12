@@ -76,7 +76,7 @@ public class ApiV1CommentController {
 
     record ModifyReqBody(String content) {}
 
-    @Operation(summary = "댓글 수정", description = "게시글의 댓글을 수정합니다.12")
+    @Operation(summary = "댓글 수정", description = "게시글의 댓글을 수정합니다.")
     @PutMapping("{id}")
     @Transactional
     public RsData<Void> modify(@PathVariable long postId, @PathVariable long id, @RequestBody ModifyReqBody reqBody) {
