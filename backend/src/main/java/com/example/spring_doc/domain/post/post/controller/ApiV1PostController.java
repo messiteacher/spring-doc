@@ -30,7 +30,7 @@ public class ApiV1PostController {
 
     record StatisticsResBody(long postCount, long postPublishedCount, long postListedCount) { }
 
-    @Operation(summary = "통계")
+    @Operation(summary = "통계 조회")
     @GetMapping("/statistics")
     public RsData<StatisticsResBody> getStatistics() {
 
